@@ -1,0 +1,130 @@
+import random
+
+# =====================================================================
+# 1. FAZA GLOBALNA: INICJALIZACJA I KRZYŻOWANIE (Crossover)
+# =====================================================================
+
+RODZIC_A = "TATCTGGTTCTCCCTAAGGTTGATTGCGGTTGGACGTTACAATTCAATCAGGGCCATACATAATGTTTGTAGGCAATCTTAGGATAGCCTATAAACGCCCTACAGGTGTTGGACTGTGCTGGACTGTTATTCAGGTTTAGCGATATCCTCTGTATAGCCTGTAAATACAGCAGTGTTTTTATTTTTTATAGTGATAGCCTGTAAGCGCGCTGTAATTATAGTGTATGTTGCTGAAATTCTATAGTTAGATAGCCTGTAAGGCGCTGTAATTATAGTGATGTAGTGAAATTTATATGTGTATAAGCCTAGTAAGGCGCTTAATTATAGTGATGTTGTGAAATTTATAGTGATTAGCCAATGTAAGCGCTGTAAATACAGGGTGTTGATCCTATACTAGCACGTAAGGGAGGGGTAGGGGCCCCCCCTTGGCTGGGAGGGAGCGCGCGACCGGGAACGAGTGCGTATTCACAATAAGCCACTTCCAGTTCACCAGTTTTGGTCCTTGAGCGAAGATGGGCTCCCCCCGAGGCACGACGGGAGAGGATCGAGCGGATATAGCCTGAATGATCAGGCTCTTAGCTAGCGTATCACGGGGTGTACACGTGCTGTAATTTTTTTTGTTGCATATCTAAGACAGGGCAATGTTTTTAGTTCCCATACGGAACGAAGAGCCTGAGTGCGACCAGAAATTCCAATCATGTGAACTGACATAAGCTACCCCACGCAAACTGGTTTAAGGCGCAGCAAATGAAGAGTAGGCACAACTTGTTGTATTAAAATTTTACATCTTCATTTGCGCC"
+RODZIC_B = "TATCTGGTTCTCCCTAAGGTTGATTGCGGTTGGACGTTACAATTCAATCAGATACAAATGTTTGTAGGCTAGGATAGCCTATAAATACATGGACGTGCTGGACTATTCAGGTTTAGCGATTCCTCAGGATACCTATATAATACAGAGTGTTTTATTTTTTATAGTGATAGCTGAAGGCGCTGTAATTATAGTGATGTTGTCGACACTTATAGTGACTAGCCTGTAAGGCGCTGTAATTATAGTGATGTTGTGACACTTAGGTAGTGATAGCCTGTAAGGCGCTGTAATTATAGTGATGTATGTGAAATTTATAGTGATAGCCTGTAAGCTGTAAATACAGGGTGTTGATAGCCTATAGCGTAGCACGTGGGAGGGGTAGGGGCCCCCCCGCTGGGAGGGAGCAAGCGACCGGGAACGAGTGCGTATTCACATAAACACCACCTCCGGTTCACCAGTTTTGGTCCTTGAGCGAGATGGGCTCCCCCCGAGGCACGAGGGATCAGGGATCGAAGCGGAATAGCCGAACGATTAGGCTGTTATAGTGTATCACGGAGGTGTACACGTGCTGTAATTATTTTTGTTGCACGTCAGAGTCGGGCAACGTTTTTAGTTCACAGAAGAGAGCCTGAGGCGACCAGAAAAGCGATCATGTGAACTGACATAGCTACCCCACGCAAGGCAGACTGGTATAAAGCCCAAGCAAATGAAGGTAGGCAACTTGTTGCTTCTTAAAATTTTACTCTTCAATTTGCGTTTGGACATGACCACAATTTATTTTCTTTTACAGAATCATCACCGCC" 
+
+def skrzyzuj_blokowo(seq_A, seq_B, rozmiar_bloku=100):
+    """Krzyżuje dwie sekwencje 800 bp, wymieniając bloki (np. po 100 bp)."""
+    potomek = ""
+    # Zabezpieczenie przed błędem, jeśli RODZIC_B to placeholder
+    if len(seq_B) != 800:
+        print("UWAGA: RODZIC_B nie ma 800 pz! Zwracam RODZIC_A.")
+        return seq_A
+        
+    for i in range(0, len(seq_A), rozmiar_bloku):
+        if random.choice([True, False]):
+            potomek += seq_A[i:i+rozmiar_bloku]
+        else:
+            potomek += seq_B[i:i+rozmiar_bloku]
+    return potomek
+
+# Tworzymy pierwszego potomka, baza do optymalizacji
+sek_wir = skrzyzuj_blokowo(RODZIC_A, RODZIC_B, rozmiar_bloku=100)
+etykieta_lidera = "potomek_startowy"
+
+# Inicjalizacja list i słowników
+elita_liderow = [(etykieta_lidera, sek_wir)] 
+wszystkie_wygenerowane = {
+    sek_wir: etykieta_lidera,
+    RODZIC_A: "rodzic_A",
+    RODZIC_B: "rodzic_B"
+}
+
+LICZBA_GENERACJI = 15
+ZAPYTANIA_NA_GENERACJE = 6 
+
+# =====================================================================
+# 2. FAZA LOKALNA: (Hill-Climbing)
+# =====================================================================
+
+print(f"Optymalizację memetyczną. Startowy lider: {etykieta_lidera}")
+
+for gen in range(1, LICZBA_GENERACJI + 1):
+    print(f"\n--- GENERACJA {gen} ---")
+    print(f"Aktualny lider (baza dla Nawigatora): {etykieta_lidera}")
+
+    # 1. NAWIGATOR: Generowanie wariantów od AKTUALNEGO lidera (sek_wir)
+    kandydaci_w_generacji = {}
+    for runda in range(ZAPYTANIA_NA_GENERACJE):
+        kod, odp = wolaj(
+            '/nawigator/edycje',
+            {'sekwencja': sek_wir, 'poziom': 2, 'ile_kodow': 6, 'opcji': 8, 'ziarno': 1000 + gen * 10 + runda},
+        )
+        if kod == 200:
+            for opt in odp['opcje']:
+                seq_opt = opt['sekwencja']
+                etykieta_opt = f"gen{gen}_r{runda}_{opt['nr']}"
+
+                kandydaci_w_generacji[seq_opt] = etykieta_opt
+                wszystkie_wygenerowane[seq_opt] = etykieta_opt
+
+    print(f"Nawigator wygenerował {len(kandydaci_w_generacji)} nowych wariantów.")
+
+    # 2. SĘDZIA: Walka kandydatów z aktualnym liderem
+    for seq_kandydat, label_kandydat in kandydaci_w_generacji.items():
+        kod, wynik = wolaj(
+            '/sedzia',
+            # Aktualny lider (sek_wir) walczy z nowym kandydatem
+            {'a': sek_wir, 'b': seq_kandydat, 'nazwa_a': etykieta_lidera, 'nazwa_b': label_kandydat}
+        )
+
+        # Jeśli Sędzia uzna, że kandydat (indeks 1) jest silniejszy...
+        if kod == 200 and wynik.get('silniejsza_idx') == 1:
+            print(f"  -> ZMIANA LIDERA! {label_kandydat} pokonał {etykieta_lidera}")
+
+            # Kandydat staje się nowym liderem!
+            sek_wir = seq_kandydat
+            etykieta_lidera = label_kandydat
+            elita_liderow.append((etykieta_lidera, sek_wir))
+
+            # Następni kandydaci w tej pętli będą już walczyć z tym NOWYM, mocniejszym liderem
+
+print(f"\nKoniec ewolucji. Ostateczny lider: {etykieta_lidera}")
+print(f"W trakcie całego procesu zanotowano {len(elita_liderow) - 1} ulepszeń sekwencji startowej.")
+
+# =====================================================================
+# 3. PRZYGOTOWANIE PACZKI 100 SEKWENCJI
+# =====================================================================
+do_wyslania = []
+unikalne_set = set()
+
+def dodaj_do_paczki(label, seq):
+    if len(do_wyslania) < 100 and seq not in unikalne_set and len(seq) == 800:
+        do_wyslania.append((label, seq))
+        unikalne_set.add(seq)
+
+# Najpierw wrzucamy elitę liderów odwróconą kolejnością
+# (Chcemy, aby ostateczny, najsilniejszy sek_wir był jako pierwszy w FASTA dla wyższej oceny TOP10)
+for label, seq in reversed(elita_liderow):
+    dodaj_do_paczki(label, seq)
+
+# Następnie dopełniamy resztą wygenerowanych wariantów (w tym rodzicami), by osiągnąć równe 100
+for seq, label in wszystkie_wygenerowane.items():
+    dodaj_do_paczki(label, seq)
+
+# =====================================================================
+# 4. WGRANIE (POST /wgraj)
+# =====================================================================
+linie_fasta = []
+for label, seq in do_wyslania:
+    linie_fasta.extend([f">{label}", seq])
+
+fasta_payload = "\n".join(linie_fasta)
+print(f"\nWysyłanie paczki {len(do_wyslania)} unikalnych sekwencji do /wgraj...")
+
+kod_wgraj, odp_wgraj = wolaj('/wgraj', {'fasta': fasta_payload})
+
+if kod_wgraj == 200:
+    print("Sukces! Wynik z Wyroczni:")
+    print("  Ocenionych:", odp_wgraj.get('ocenionych'))
+    print("  Punkty TOP10:", odp_wgraj.get('punkty_top10'))
+    print("  Punkty TOP100:", odp_wgraj.get('punkty_top100'))
+    print("  Punkty razem:", odp_wgraj.get('punkty_razem'))
+elif kod_wgraj == 429:
+    print("Błąd 429: Musisz odczekać 5 minut przed kolejnym wysłaniem pliku do oceny.")
+else:
+    print(f"Błąd API {kod_wgraj}:", odp_wgraj)
