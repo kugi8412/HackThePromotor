@@ -1,0 +1,3 @@
+[submodule "hack-the-BROmoter"]
+	path = hack-the-BROmoter
+	url = https://github.com/Wojttekja/hack-the-BROmoter.git
