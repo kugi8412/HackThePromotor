@@ -1,0 +1,84 @@
+[
+ {
+  "name": "P0_pks1_native_800",
+  "fwd": true,
+  "rev": true,
+  "verdict": "tie",
+  "len": 800,
+  "tata": 1,
+  "gc": 0.4763
+ },
+ {
+  "name": "P0c_pks1_compressed",
+  "fwd": true,
+  "rev": true,
+  "verdict": "tie",
+  "len": 800,
+  "tata": 3,
+  "gc": 0.455
+ },
+ {
+  "name": "P1_tef1_native_800",
+  "fwd": false,
+  "rev": true,
+  "verdict": "BEATS_WILD",
+  "len": 800,
+  "tata": 0,
+  "gc": 0.5238
+ },
+ {
+  "name": "P2_pki1_native_800",
+  "fwd": false,
+  "rev": true,
+  "verdict": "BEATS_WILD",
+  "len": 800,
+  "tata": 0,
+  "gc": 0.5525
+ },
+ {
+  "name": "P3_2xUASpki1__TEFcore",
+  "fwd": false,
+  "rev": true,
+  "verdict": "BEATS_WILD",
+  "len": 800,
+  "tata": 0,
+  "gc": 0.5537
+ },
+ {
+  "name": "P4_2xUAStef1__PKIcore",
+  "fwd": false,
+  "rev": true,
+  "verdict": "BEATS_WILD",
+  "len": 800,
+  "tata": 0,
+  "gc": 0.5212
+ },
+ {
+  "name": "P5_UASpki1_UAStef1__TEFcore",
+  "fwd": false,
+  "rev": true,
+  "verdict": "BEATS_WILD",
+  "len": 800,
+  "tata": 0,
+  "gc": 0.535
+ },
+ {
+  "name": "P6_CCAATx4_UAStef1__TEFcore",
+  "verdict": "error",
+  "err": "/sedzia -> 422: {\"detail\":[{\"type\":\"value_error\",\"loc\":[\"body\",\"b\"],\"msg\":\"Value error, sekwencja ma 796 znakow, wymagane dokladnie 800 (wyrownane do TSS)\",\"input\":\"AAACATCTTCAATTTTGCATTGGAGATACCACCAG"
+ },
+ {
+  "name": "P7_UASpks1_UAStef1__TEFcore",
+  "fwd": false,
+  "rev": true,
+  "verdict": "BEATS_WILD",
+  "len": 800,
+  "tata": 0,
+  "gc": 0.5038
+ },
+ {
+  "name": "P8_MAX_CCAATx4_UASpki1_UAStef1__TEFcore",
+  "verdict": "error",
+  "err": "/sedzia -> 422: {\"detail\":[{\"type\":\"value_error\",\"loc\":[\"body\",\"b\"],\"msg\":\"Value error, sekwencja ma 796 znakow, wymagane dokladnie 800 (wyrownane do TSS)\",\"input\":\"AAACATCTTCAATTTTGCATTGGAGATACCACCAG"
+ }
+]

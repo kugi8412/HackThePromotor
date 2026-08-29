@@ -1,0 +1,142 @@
+[
+ {
+  "a": "TrAtP1_002037",
+  "b": "TrAtP1_001747",
+  "fwd": true,
+  "rev": true,
+  "verdict": "tie_first"
+ },
+ {
+  "a": "TrAtP1_000309",
+  "b": "TrAtP1_000191",
+  "fwd": true,
+  "rev": true,
+  "verdict": "tie_first"
+ },
+ {
+  "a": "TrAtP1_000248",
+  "b": "TrAtP1_000715",
+  "fwd": true,
+  "rev": false,
+  "verdict": "A_real"
+ },
+ {
+  "a": "TrAtP1_000101",
+  "b": "TrAtP1_000152",
+  "fwd": true,
+  "rev": true,
+  "verdict": "tie_first"
+ },
+ {
+  "a": "TrAtP1_000284",
+  "b": "TrAtP1_000812",
+  "fwd": true,
+  "rev": true,
+  "verdict": "tie_first"
+ },
+ {
+  "a": "TrAtP1_002160",
+  "b": "TrAtP1_000687",
+  "fwd": true,
+  "rev": false,
+  "verdict": "A_real"
+ },
+ {
+  "a": "TrAtP1_001289",
+  "b": "TrAtP1_002510",
+  "fwd": false,
+  "rev": true,
+  "verdict": "B_real"
+ },
+ {
+  "a": "TrAtP1_000819",
+  "b": "TrAtP1_000104",
+  "fwd": true,
+  "rev": true,
+  "verdict": "tie_first"
+ },
+ {
+  "a": "TrAtP1_000191",
+  "b": "TrAtP1_000792",
+  "fwd": false,
+  "rev": true,
+  "verdict": "B_real"
+ },
+ {
+  "a": "TrAtP1_000452",
+  "b": "TrAtP1_000054",
+  "fwd": false,
+  "rev": true,
+  "verdict": "B_real"
+ },
+ {
+  "a": "TrAtP1_001612",
+  "b": "TrAtP1_001356",
+  "fwd": false,
+  "rev": true,
+  "verdict": "B_real"
+ },
+ {
+  "a": "TrAtP1_002367",
+  "b": "TrAtP1_001635",
+  "fwd": true,
+  "rev": false,
+  "verdict": "A_real"
+ },
+ {
+  "a": "TrAtP1_001271",
+  "b": "TrAtP1_002078",
+  "fwd": true,
+  "rev": true,
+  "verdict": "tie_first"
+ },
+ {
+  "a": "TrAtP1_000819",
+  "b": "TrAtP1_002179",
+  "fwd": true,
+  "rev": true,
+  "verdict": "tie_first"
+ },
+ {
+  "a": "TrAtP1_001852",
+  "b": "TrAtP1_001812",
+  "fwd": false,
+  "rev": true,
+  "verdict": "B_real"
+ },
+ {
+  "a": "TrAtP1_002510",
+  "b": "TrAtP1_001603",
+  "fwd": true,
+  "rev": true,
+  "verdict": "tie_first"
+ },
+ {
+  "a": "TrAtP1_002028",
+  "b": "TrAtP1_000947",
+  "fwd": false,
+  "rev": true,
+  "verdict": "B_real"
+ },
+ {
+  "a": "TrAtP1_000970",
+  "b": "TrAtP1_000035",
+  "fwd": false,
+  "rev": true,
+  "verdict": "B_real"
+ },
+ {
+  "a": "TrAtP1_002097",
+  "b": "TrAtP1_000299",
+  "fwd": true,
+  "rev": false,
+  "verdict": "A_real"
+ },
+ {
+  "a": "TrAtP1_002212",
+  "b": "TrAtP1_001417",
+  "fwd": true,
+  "rev": true,
+  "verdict": "tie_first"
+ }
+]
